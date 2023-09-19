@@ -1,0 +1,119 @@
+/* Write your CSS here */
+* {
+  font-family: Roboto;
+  box-sizing: border-box;
+}
+
+.bg {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.firstContainer {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/money-manager/money-manager-bg.png');
+  background-size: cover;
+  padding: 1rem;
+  width: 80%;
+}
+
+.spanContent {
+  color: #0b69ff;
+  font-weight: bold;
+}
+
+.UlMoneyDetailsContainer {
+  margin-top: 1rem;
+  list-style: none;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  overflow: auto;
+}
+
+.thirdContainer {
+  margin-top: 1rem;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formContainer {
+  padding: 1rem;
+  border: 1px solid gray;
+  border-radius: 8px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.amountContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.typeContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.formBtnEl {
+  color: white;
+  background-color: #0b69ff;
+  border: 0px solid transparent;
+  border-radius: 2px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.tableContainer {
+  padding: 1rem;
+  border: 1px solid gray;
+  border-radius: 8px;
+  height: 280px;
+}
+
+.UlTableContainer {
+  padding-left: 0px;
+  list-style: none;
+}
+
+.tableHeader {
+  display: flex;
+  background-color: white;
+  border: 1px solid #cbd5e1;
+}
+
+.paraDescription {
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 32px;
+  width: 33%;
+}
+
+@media (max-width: 767px) {
+  .UlMoneyDetailsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+  .formContainer {
+    margin-bottom: 8px;
+  }
+  .firstContainer {
+    text-align: center;
+  }
+  .thirdContainer {
+    flex-direction: column;
+  }
+}
