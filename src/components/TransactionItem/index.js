@@ -1,16 +1,17 @@
 // Write your code here
 import './index.css'
 
-const TransactionItem = () => {
-  console.log('TransactionItem')
+const TransactionItem = props => {
+  const {eachObject} = props
+  const {titleName, amountVal, typeVal} = eachObject
   return (
     <li className="tableDescription">
-      <p className="paraDescription">Salary</p>
+      <p className="paraDescription">{titleName}</p>
 
       <div className="tableDelete">
-        <p className="paraDescription">Rs 50000</p>
+        <p className="paraDescription">{amountVal}</p>
 
-        <p className="paraDescription">Income</p>
+        <p className="paraDescription">{typeVal}</p>
 
         <button type="button" className="deleteBtnEl">
           <img

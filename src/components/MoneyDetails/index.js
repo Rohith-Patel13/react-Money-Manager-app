@@ -1,8 +1,9 @@
 // Write your code here
 import './index.css'
 
-const MoneyDetails = () => {
-  console.log('MoneyDetails')
+const MoneyDetails = props => {
+  console.log(props)
+
   return (
     <>
       <li className="balanceContainer">

@@ -1,5 +1,7 @@
 import {Component} from 'react'
 
+import {v4 as uuidv4} from 'uuid'
+
 import './index.css'
 
 import MoneyDetails from '../MoneyDetails/index'
@@ -19,8 +21,44 @@ const transactionTypeOptions = [
 
 // Write your code here
 console.log(transactionTypeOptions)
+const formData = []
 class MoneyManager extends Component {
+  state = {
+    title: '',
+    amount: '',
+    type: 'Income',
+    formDataInfo: formData,
+  }
+
+  titleInputEvent = event => {
+    this.setState({title: event.target.value})
+  }
+
+  amountInputEvent = event => {
+    this.setState({amount: event.target.value})
+  }
+
+  dropDownEvent = event => {
+    this.setState({type: event.target.value})
+  }
+
+  formAddBtnClicked = () => {
+    const {title, amount, type} = this.state
+    const newFormData = {
+      id: uuidv4(),
+      titleName: title,
+      amountVal: amount,
+      typeVal: type,
+    }
+
+    this.setState(prevState => ({
+      formDataInfo: [...prevState.formDataInfo, newFormData],
+    }))
+  }
+
   render() {
+    const {title, amount, type, formDataInfo} = this.state
+
     return (
       <div className="bg">
         <div className="firstContainer">
@@ -40,23 +78,39 @@ class MoneyManager extends Component {
             <h1>Add Transaction</h1>
             <div className="titleContainer">
               <label htmlFor="titleId">TITLE</label>
-              <input id="titleId" type="text" placeholder="TITLE" />
+              <input
+                id="titleId"
+                type="text"
+                placeholder="TITLE"
+                value={title}
+                onChange={this.titleInputEvent}
+              />
             </div>
 
             <div className="amountContainer">
               <label htmlFor="amountId">AMOUNT</label>
-              <input id="amountId" type="text" placeholder="AMOUNT" />
+              <input
+                id="amountId"
+                type="text"
+                placeholder="AMOUNT"
+                value={amount}
+                onChange={this.amountInputEvent}
+              />
             </div>
 
             <div className="typeContainer">
               <label htmlFor="typeId">TYPE</label>
-              <select id="typeId">
-                <option selected>Income</option>
+              <select id="typeId" value={type} onChange={this.dropDownEvent}>
+                <option>Income</option>
                 <option>Expenses</option>
               </select>
             </div>
 
-            <button type="button" className="formBtnEl">
+            <button
+              type="button"
+              className="formBtnEl"
+              onClick={this.formAddBtnClicked}
+            >
               Add
             </button>
           </form>
@@ -69,7 +123,9 @@ class MoneyManager extends Component {
                 <p className="paraDescription tableHead">Amount</p>
                 <p className="paraDescription tableHead">Type</p>
               </li>
-              <TransactionItem />
+              {formDataInfo.map(eachObject => (
+                <TransactionItem eachObject={eachObject} key={eachObject.id} />
+              ))}
             </ul>
           </div>
         </div>
