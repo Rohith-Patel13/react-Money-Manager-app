@@ -7,6 +7,14 @@ import './index.css'
 import MoneyDetails from '../MoneyDetails/index'
 
 import TransactionItem from '../TransactionItem/index'
+import Options from '../Options'
+
+/*
+The key prop is primarily used 
+when rendering lists to help 
+React keep track of each element's 
+identity in the virtual DOM.
+*/
 
 const transactionTypeOptions = [
   {
@@ -20,14 +28,16 @@ const transactionTypeOptions = [
 ]
 
 // Write your code here
-console.log(transactionTypeOptions)
+
 const formData = []
+const moneyDetails = {balance: 0, income: 0, expenses: 0}
 class MoneyManager extends Component {
   state = {
     title: '',
     amount: '',
     type: 'Income',
     formDataInfo: formData,
+    moneyDetailsObject: moneyDetails,
   }
 
   titleInputEvent = event => {
@@ -39,7 +49,11 @@ class MoneyManager extends Component {
   }
 
   dropDownEvent = event => {
-    this.setState({type: event.target.value})
+    const arrayOption = transactionTypeOptions.filter(
+      eachObject => eachObject.optionId === event.target.value,
+    )
+
+    this.setState({type: arrayOption[0].displayText})
   }
 
   formAddBtnClicked = () => {
@@ -54,10 +68,30 @@ class MoneyManager extends Component {
     this.setState(prevState => ({
       formDataInfo: [...prevState.formDataInfo, newFormData],
     }))
+    /*
+    prevState is used to update the state based on the previous state
+    values. When you call setState with a function argument, React provides 
+    you with the previous state (prevState) as an argument to that function. 
+    This is important when you want to update the state based on its previous 
+    values to avoid race conditions or conflicts.
+    */
+
+    // expenses = income - balance (derived)
+    // balance = income - expenses (given)
+    // income = expenses + balance (derived)
+    if (type === 'Income') {
+      this.setState(prevState => ({
+        moneyDetailsObject: {
+          ...prevState.moneyDetailsObject,
+          income: amount,
+          balance: amount,
+        },
+      }))
+    }
   }
 
   render() {
-    const {title, amount, type, formDataInfo} = this.state
+    const {title, amount, formDataInfo, moneyDetailsObject} = this.state
 
     return (
       <div className="bg">
@@ -70,7 +104,7 @@ class MoneyManager extends Component {
         </div>
 
         <div className="UlMoneyDetailsContainer">
-          <MoneyDetails />
+          <MoneyDetails moneyDetailsObjectProp={moneyDetailsObject} />
         </div>
 
         <div className="thirdContainer">
@@ -100,9 +134,10 @@ class MoneyManager extends Component {
 
             <div className="typeContainer">
               <label htmlFor="typeId">TYPE</label>
-              <select id="typeId" value={type} onChange={this.dropDownEvent}>
-                <option>Income</option>
-                <option>Expenses</option>
+              <select id="typeId" onChange={this.dropDownEvent}>
+                {transactionTypeOptions.map(eachObject => (
+                  <Options eachObject={eachObject} key={eachObject.optionId} />
+                ))}
               </select>
             </div>
 
