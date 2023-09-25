@@ -35,7 +35,7 @@ class MoneyManager extends Component {
   state = {
     title: '',
     amount: '',
-    type: 'Income',
+    type: transactionTypeOptions[0].displayText,
     formDataInfo: formData,
     moneyDetailsObject: moneyDetails,
   }
@@ -67,6 +67,8 @@ class MoneyManager extends Component {
 
     this.setState(prevState => ({
       formDataInfo: [...prevState.formDataInfo, newFormData],
+      title: '',
+      amount: '',
     }))
     /*
     prevState is used to update the state based on the previous state
@@ -76,17 +78,41 @@ class MoneyManager extends Component {
     values to avoid race conditions or conflicts.
     */
 
-    // expenses = income - balance (derived)
-    // balance = income - expenses (given)
-    // income = expenses + balance (derived)
+    // expenses = income - balance
+    // balance = income - expenses
+    // income = expenses + balance
+
     if (type === 'Income') {
       this.setState(prevState => ({
         moneyDetailsObject: {
           ...prevState.moneyDetailsObject,
-          income: amount,
-          balance: amount,
+          income: prevState.moneyDetailsObject.income + parseInt(amount),
+          balance: prevState.moneyDetailsObject.balance + parseInt(amount),
         },
       }))
+    }
+    if (type === 'Expenses') {
+      this.setState(prevState => ({
+        moneyDetailsObject: {
+          ...prevState.moneyDetailsObject,
+          expenses: prevState.moneyDetailsObject.expenses + parseInt(amount),
+          balance: prevState.moneyDetailsObject.balance - parseInt(amount),
+        },
+      }))
+    }
+  }
+
+  deleteButtonClicked = idNum => {
+    const {formDataInfo} = this.state
+    const deletedArrayOfObject = formDataInfo.filter(
+      eachObject => eachObject.id === idNum,
+    )
+    // console.log(deletedArrayOfObject) // Array of object
+    const deletedObject = deletedArrayOfObject[0]
+
+    const {amountVal, typeVal} = deletedObject
+    if (typeVal === 'Income') {
+      console.log(amountVal)
     }
   }
 
@@ -159,7 +185,11 @@ class MoneyManager extends Component {
                 <p className="paraDescription tableHead">Type</p>
               </li>
               {formDataInfo.map(eachObject => (
-                <TransactionItem eachObject={eachObject} key={eachObject.id} />
+                <TransactionItem
+                  eachObject={eachObject}
+                  deleteButtonClickedProp={this.deleteButtonClicked}
+                  key={eachObject.id}
+                />
               ))}
             </ul>
           </div>
