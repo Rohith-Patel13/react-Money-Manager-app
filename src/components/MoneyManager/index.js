@@ -104,16 +104,38 @@ class MoneyManager extends Component {
 
   deleteButtonClicked = idNum => {
     const {formDataInfo} = this.state
-    const deletedArrayOfObject = formDataInfo.filter(
+    const updatedFormDataInfo = formDataInfo.filter(
+      eachObject => eachObject.id !== idNum,
+    )
+
+    const deletedFormDataInfo = formDataInfo.filter(
       eachObject => eachObject.id === idNum,
     )
-    // console.log(deletedArrayOfObject) // Array of object
-    const deletedObject = deletedArrayOfObject[0]
-
+    const deletedObject = deletedFormDataInfo[0]
     const {amountVal, typeVal} = deletedObject
-    if (typeVal === 'Income') {
-      console.log(amountVal)
+    if (typeVal === 'Expenses') {
+      this.setState(prevState => ({
+        moneyDetailsObject: {
+          ...prevState.moneyDetailsObject,
+          expenses: prevState.moneyDetailsObject.expenses - parseInt(amountVal),
+          balance: prevState.moneyDetailsObject.balance + parseInt(amountVal),
+        },
+      }))
     }
+
+    if (typeVal === 'Income') {
+      this.setState(prevState => ({
+        moneyDetailsObject: {
+          ...prevState.moneyDetailsObject,
+          income: prevState.moneyDetailsObject.income - parseInt(amountVal),
+          balance: prevState.moneyDetailsObject.balance - parseInt(amountVal),
+        },
+      }))
+    }
+
+    this.setState({
+      formDataInfo: updatedFormDataInfo,
+    })
   }
 
   render() {
